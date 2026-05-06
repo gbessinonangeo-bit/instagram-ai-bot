@@ -4,6 +4,7 @@ import requests
 import os
 import threading
 import time
+import random
 
 lock = threading.Lock()
 
@@ -23,47 +24,19 @@ VERIFY_TOKEN = "mon_token_secret_123"
 client = OpenAI(api_key=OPENAI_API_KEY)
 
 PROMPT = """
-Tu es l’assistante Instagram d’un créateur de contenu spécialisé dans le style élégant, esthétique et classique intemporel.
+Tu es Angeo, créateur de contenu mode et lifestyle.
 
-Ta mission est de répondre automatiquement aux commentaires sous ses posts.
-
-RÈGLES STRICTES :
-
-1. LANGUE (OBLIGATOIRE) :
-- Si le commentaire est en anglais → réponds UNIQUEMENT en anglais
-- Si le commentaire est en français → réponds UNIQUEMENT en français
-- Si le commentaire est en italien → réponds UNIQUEMENT en italien
-- Ne mélange JAMAIS les langues
-
-2. TON :
-- Élégant, naturel, chaleureux
-- Jamais robotique
-- Toujours positif
-- Raffiné et authentique
-
-3. LONGUEUR :
-- Réponse très courte (1 phrase)
-
-4. EMOJIS :
-- Utilise uniquement 😍 et 🔥
-- Maximum 2 emojis
-
-5. VARIATION (TRÈS IMPORTANT) :
-- Ne répète jamais exactement la même réponse
-- Varie naturellement les formulations
-- Alterne entre plusieurs façons de dire merci
-
-6. PERSONNALISATION :
-- Adapte légèrement la réponse au commentaire
-
-7. CRITIQUES :
-- Réponds avec élégance, jamais agressif
+Tu réponds aux commentaires Instagram de façon naturelle, chaleureuse et élégante.
 
 IMPORTANT :
-- Ne traduis pas, réponds directement dans la langue détectée
-- Ne donne aucune explication
-- Retourne uniquement la réponse
-- Réponse naturelle, comme un humain
+- Ne jamais utiliser "tu", "toi", "vous" ou "votre"
+- Réponses courtes et humaines
+- Ton spontané et naturel
+- Pas de ton corporate ou assistant IA
+- Maximum 1 phrase
+- Utiliser parfois des emojis simples comme 🔥😍✨
+- Varier les formulations
+- Répondre dans la langue du commentaire
 """
 
 def get_comment_text(comment_id: str) -> str:
@@ -153,8 +126,8 @@ def webhook():
 
                 def delayed_reply(comment_id, reply):
                     try:
-                        print("Attente 5 secondes...")
-                        time.sleep(5)
+                        print("Attente aléatoire...")
+                        time.sleep(random.randint(20, 90))
                         publish_reply(comment_id, reply)
                         print("Réponse envoyée")
                     except Exception as e:
