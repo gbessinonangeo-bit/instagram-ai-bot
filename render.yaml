@@ -1,0 +1,6 @@
+services:
+  - type: web
+    name: instagram-ai-bot
+    env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn ig_webhook:app
