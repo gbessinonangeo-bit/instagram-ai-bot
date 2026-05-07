@@ -49,13 +49,17 @@ STYLE :
 
 def get_comment_text(comment_id: str) -> str:
     url = f"https://graph.facebook.com/v25.0/{comment_id}"
+
     params = {
         "fields": "text,username",
         "access_token": IG_ACCESS_TOKEN
     }
+
     r = requests.get(url, params=params, timeout=20)
     r.raise_for_status()
+
     data = r.json()
+
     return data.get("text", "")
 
 def generate_reply(comment_text: str) -> str:
@@ -101,7 +105,15 @@ def webhook():
 
                 value = change.get("value", {})
                 comment_id = value.get("id")
-
+                
+                media_id = value.get("media", {}).get("id")
+                media_owner = value.get("media", {}).get("owner", {}).get("username", "")                
+                
+                print("MEDIA OWNER :", media_owner)
+                
+                if not media_id:
+                    print("Aucun media_id, ignoré")
+                    continue
                 author_username = value.get("from", {}).get("username", "")
 
                 if author_username == "iam___angeo":
